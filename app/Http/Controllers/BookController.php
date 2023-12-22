@@ -28,6 +28,9 @@ class BookController extends Controller
         };
         $books = $books->get();
 
+        $casheKey = 'books:' . $filter . ':' . $title;
+        $books = cache()->remember($cacheKey, 'books', 3600, fn() => $books->get());
+
         return view('books.index', ['books' => $books]);
     }
 
